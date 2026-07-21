@@ -4,7 +4,9 @@ import { authMiddleware } from './middleware/auth'
 import { extractArticle } from './lib/readabilityExtractor'
 import { inferCategory } from './lib/categoryInference'
 import { ArticleRepository } from './repositories/article'
+import { WritingRepository } from './repositories/writing'
 import { addArticle, listArticles, getArticle } from './usecases/article'
+import { getWriting, saveWriting } from './usecases/writing'
 import type { AppEnv } from './env'
 
 const app = new Hono<AppEnv>()
@@ -46,6 +48,24 @@ app.get('/api/articles/:id', authMiddleware, async (c) => {
   const article = await getArticle(repo, c.req.param('id'))
   if (!article) return c.json({ error: 'not found' }, 404)
   return c.json(article)
+})
+
+app.get('/api/writings/:articleId', authMiddleware, async (c) => {
+  const repo = new WritingRepository(c.get('supabase'))
+  const writing = await getWriting(repo, c.req.param('articleId'))
+  return c.json(writing)
+})
+
+app.put('/api/writings/:articleId', authMiddleware, async (c) => {
+  const repo = new WritingRepository(c.get('supabase'))
+  const { contentMarkdown } = await c.req.json<{ contentMarkdown?: string }>()
+
+  try {
+    const writing = await saveWriting(repo, c.req.param('articleId'), contentMarkdown ?? '')
+    return c.json(writing)
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : 'failed to save writing' }, 422)
+  }
 })
 
 export default app
