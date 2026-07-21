@@ -72,3 +72,25 @@ npm run build -w ui   # 型チェック + vite build
 ```bash
 npx supabase db reset
 ```
+
+## CI/CD
+
+`.github/workflows/ci-cd.yml` で以下を実行する。
+
+- PR・push時: `api`の型チェック、`ui`のビルド（型チェック込み）、`api`のテスト（ローカルSupabaseをCI上で起動）
+- `main`へのpush時（上記が全て通った場合のみ）: 本番Supabaseへのマイグレーション適用 → `api`をCloudflare Workersへデプロイ → `ui`をCloudflare Pagesへデプロイ
+
+GitHubリポジトリの Settings → Secrets and variables → Actions に以下を登録しておく。
+
+| Secret | 用途 |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Workers/Pagesへのデプロイ権限を持つAPIトークン |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflareのアカウント ID |
+| `SUPABASE_ACCESS_TOKEN` | `supabase link`/`db push`用の個人アクセストークン |
+| `SUPABASE_PROJECT_REF` | 本番Supabaseプロジェクトのref |
+| `SUPABASE_DB_PASSWORD` | 本番SupabaseのDBパスワード |
+| `PROD_SUPABASE_URL` | 本番SupabaseのAPI URL（`api`のsecret設定・`ui`のビルド両方で使用） |
+| `PROD_SUPABASE_ANON_KEY` | 本番Supabaseのanon key（同上） |
+| `PROD_API_BASE_URL` | デプロイ済み`api`のURL（`ui`のビルド時に埋め込む） |
+
+`ui`をCloudflare Pagesへ初回デプロイする前に、`wrangler pages project create inking` を一度手動で実行してプロジェクトを作成しておく必要がある。
