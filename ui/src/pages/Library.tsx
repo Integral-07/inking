@@ -28,7 +28,7 @@ export function Library() {
         <p className="stage-desc">URLを貼り付けて記事を追加。カテゴリは自動推定される。</p>
       </div>
 
-      <div className="frame wide">
+      <div className="frame">
         <div className="frame-bar">
           <div className="dot" />
           <div className="dot" />

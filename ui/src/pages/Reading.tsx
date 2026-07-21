@@ -14,7 +14,7 @@ export function Reading() {
         <p className="stage-desc">記事本文を読む。単語選択→単語帳への保存は次のステップで追加予定。</p>
       </div>
 
-      <div className="frame wide">
+      <div className="frame">
         <div className="frame-bar">
           <div className="dot" />
           <div className="dot" />
