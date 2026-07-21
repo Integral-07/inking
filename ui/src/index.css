@@ -63,6 +63,8 @@ a {
   position: sticky;
   top: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .wordmark {
   font-family: 'Newsreader', serif;
@@ -140,6 +142,37 @@ a {
   margin-top: 20px;
 }
 
+.account-box {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.account-email {
+  font-size: 11px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-action {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  width: fit-content;
+}
+.account-action:hover {
+  color: var(--redpen);
+}
+
 /* ---------- stage ---------- */
 .stage {
   padding: 40px 48px;
@@ -177,6 +210,9 @@ a {
   box-shadow: var(--shadow);
   max-width: 640px;
   overflow: hidden;
+}
+.frame.wide {
+  max-width: 880px;
 }
 .frame-bar {
   display: flex;
