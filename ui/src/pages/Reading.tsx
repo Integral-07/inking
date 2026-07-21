@@ -9,7 +9,7 @@ export function Reading() {
   return (
     <section>
       <div className="stage-header">
-        <div className="eyebrow">02 / Reading</div>
+        <div className="eyebrow">Library / Reading</div>
         <h1 className="stage-title">記事閲覧</h1>
       </div>
 
