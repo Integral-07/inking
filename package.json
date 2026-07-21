@@ -1,0 +1,12 @@
+{
+  "name": "inking",
+  "private": true,
+  "workspaces": [
+    "api",
+    "ui",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "supabase": "^2.109.1"
+  }
+}

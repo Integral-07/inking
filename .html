@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marginalia — Screen Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EDEAE1;
+    --paper-2: #E3DFD3;
+    --paper-3: #F5F3EC;
+    --ink: #22262E;
+    --ink-soft: #5B6169;
+    --ink-faint: #8B8F94;
+    --rule: #C9C2B2;
+    --rule-soft: #DAD4C4;
+    --pine: #3D5A4C;
+    --pine-soft: #DCE5DE;
+    --pine-deep: #2B4137;
+    --redpen: #B34632;
+    --redpen-soft: #F3DFD8;
+    --shadow: 0 1px 2px rgba(34,38,46,0.06), 0 6px 20px rgba(34,38,46,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif{ font-family:'Newsreader', serif; }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em; }
+
+  /* ---------- layout shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns: 240px 1fr;
+    min-height:100vh;
+  }
+  .drawer{
+    background: var(--paper-2);
+    border-right: 1px solid var(--rule);
+    padding: 28px 20px;
+    position: sticky;
+    top:0;
+    height:100vh;
+  }
+  .wordmark{
+    font-family:'Newsreader', serif;
+    font-size: 22px;
+    font-weight:600;
+    font-style:italic;
+    margin-bottom:4px;
+  }
+  .wordmark-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color: var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:32px;
+    display:block;
+  }
+  .drawer-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color: var(--ink-faint);
+    margin: 0 0 10px 4px;
+  }
+  .tab-list{ list-style:none; margin:0 0 30px 0; padding:0; }
+  .tab{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    padding: 9px 10px;
+    border-radius:3px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13.5px;
+    color: var(--ink-soft);
+    cursor:pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .tab .num{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color: var(--ink-faint); }
+  .tab:hover{ background: rgba(34,38,46,0.05); color: var(--ink); }
+  .tab.active{ background: var(--ink); color: var(--paper-3); }
+  .tab.active .num{ color: rgba(245,243,236,0.55); }
+
+  .drawer-note{
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-size:12.5px;
+    color: var(--ink-faint);
+    line-height:1.5;
+    border-top:1px solid var(--rule);
+    padding-top:16px;
+    margin-top:20px;
+  }
+
+  /* ---------- stage ---------- */
+  .stage{
+    padding: 40px 48px;
+    overflow-x:auto;
+  }
+  .stage-header{
+    margin-bottom: 24px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color: var(--pine-deep);
+    margin-bottom:6px;
+  }
+  .stage-title{
+    font-family:'Newsreader', serif;
+    font-size:26px;
+    font-weight:500;
+    margin:0 0 6px 0;
+  }
+  .stage-desc{
+    font-size:13px;
+    color: var(--ink-soft);
+    max-width: 560px;
+    line-height:1.5;
+  }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+
+  /* device frame */
+  .frame{
+    background: var(--paper-3);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    max-width: 480px;
+    overflow:hidden;
+  }
+  .frame.wide{ max-width: 880px; }
+  .frame-bar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding: 10px 14px;
+    border-bottom:1px solid var(--rule);
+    background: var(--paper-2);
+  }
+  .frame-bar .dot{ width:7px; height:7px; border-radius:50%; background: var(--rule); }
+  .frame-bar .url{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color: var(--ink-faint);
+    margin-left:8px;
+  }
+
+  /* ---------- shared UI atoms ---------- */
+  .pill{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--pine-soft);
+    color: var(--pine-deep);
+  }
+  .pill.red{ background: var(--redpen-soft); color: var(--redpen); }
+  .pill.neutral{ background: var(--rule-soft); color: var(--ink-soft); }
+
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12.5px;
+    font-weight:500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{ background: var(--ink); color: var(--paper-3); }
+  .btn-ghost{ background: none; border-color: var(--rule); color: var(--ink-soft); }
+  .btn-pine{ background: var(--pine); color: white; }
+
+  hr.rule{ border:none; border-top:1px solid var(--rule); margin: 0; }
+
+  /* ---------- Screen 1: Home / Library ---------- */
+  .home-body{ padding: 22px; }
+  .add-slot{
+    border: 1.5px dashed var(--rule);
+    border-radius:8px;
+    padding: 16px;
+    text-align:center;
+    font-size:12.5px;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+  }
+  .lib-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding: 13px 4px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .lib-row:last-child{ border-bottom:none; }
+  .lib-title{ font-family:'Newsreader', serif; font-size:15px; margin: 4px 0 2px 0; }
+  .lib-meta{ font-family:'IBM Plex Mono', monospace; font-size:10px; color: var(--ink-faint); }
+
+  /* ---------- Screen 2: Article reader ---------- */
+  .reader-body{ padding: 22px; }
+  .reader-topline{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .back-link{ font-family:'IBM Plex Mono', monospace; font-size:11px; color: var(--ink-faint); text-decoration:none; }
+  .article-text{
+    font-family:'Newsreader', serif;
+    font-size:15.5px;
+    line-height:1.75;
+    color: var(--ink);
+  }
+  .hl{
+    background: linear-gradient(transparent 62%, rgba(61,90,76,0.22) 62%);
+    position:relative;
+    padding: 0 1px;
+  }
+  .hl2{
+    background: linear-gradient(transparent 62%, rgba(179,70,50,0.20) 62%);
+    padding: 0 1px;
+  }
+  .select-pop{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background: var(--ink);
+    color: var(--paper-3);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:11px;
+    padding: 5px 10px 5px 8px;
+    border-radius: 20px;
+    margin: 0 2px;
+    vertical-align: middle;
+    white-space:nowrap;
+  }
+  .select-pop .plus{ font-size:13px; line-height:1; }
+  .drag-hint{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color: var(--ink-faint);
+    text-align:center;
+    margin-top:18px;
+  }
+  .float-badge{
+    position:sticky;
+    bottom:14px;
+    margin: 22px auto 0;
+    width: fit-content;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background: var(--ink);
+    color: var(--paper-3);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12.5px;
+    padding: 9px 16px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+  }
+  .float-badge .count{
+    background: rgba(245,243,236,0.18);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    padding: 1px 7px;
+    border-radius: 20px;
+  }
+
+  /* ---------- Screen 3: Vocab list (index cards) ---------- */
+  .vocab-body{ padding: 22px; }
+  .search-row{
+    display:flex; align-items:center; gap:8px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom:18px;
+    background: var(--paper-3);
+  }
+  .search-row input{ border:none; outline:none; background:none; font-family:'IBM Plex Sans'; font-size:12.5px; color:var(--ink-soft); width:100%; }
+  .card-stack{ display:flex; flex-direction:column; gap:10px; }
+  .idx-card{
+    position:relative;
+    background: var(--paper-3);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--pine);
+    border-radius: 4px;
+    padding: 12px 14px 12px 16px;
+  }
+  .idx-card::before{
+    content:"";
+    position:absolute;
+    left: -3px; top: 14px;
+    width: 3px; height: 18px;
+    background: var(--paper-2);
+  }
+  .idx-top{ display:flex; justify-content:space-between; align-items:baseline; }
+  .idx-word{ font-family:'Newsreader', serif; font-size:16px; font-weight:500; }
+  .idx-date{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; color: var(--ink-faint); }
+  .idx-def{ font-size:12px; color: var(--ink-soft); margin-top:3px; }
+  .idx-src{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; color: var(--ink-faint); margin-top:6px; }
+  .stamp{
+    position:absolute; right:14px; bottom:10px;
+    width:30px; height:30px;
+    border:1.5px solid var(--pine);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px; color: var(--pine);
+    transform: rotate(-8deg);
+    opacity:0.75;
+  }
+
+  /* ---------- Screen 4: Vocab detail ---------- */
+  .detail-body{ padding: 24px; }
+  .detail-word{ font-family:'Newsreader', serif; font-size:28px; font-weight:500; margin: 6px 0 2px 0; }
+  .detail-src{ font-family:'IBM Plex Mono', monospace; font-size:11px; color: var(--ink-faint); text-decoration:none; }
+  blockquote.ctx{
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-size:14px;
+    color: var(--ink-soft);
+    background: var(--paper-2);
+    border-left: 2px solid var(--rule);
+    margin: 18px 0;
+    padding: 10px 16px;
+  }
+  .field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color: var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .field-box{
+    border:1px solid var(--rule);
+    border-radius:6px;
+    background: var(--paper-3);
+    padding: 10px 12px;
+    font-family:'IBM Plex Sans';
+    font-size:12.5px;
+    color: var(--ink-soft);
+    min-height: 44px;
+    margin-bottom:18px;
+    line-height:1.6;
+  }
+
+  /* ---------- Screen 5: Writing ---------- */
+  .write-shell{ display:grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
+  .write-shell.mobile{ grid-template-columns: 1fr; }
+  .write-col{ padding: 20px; }
+  .write-col.left{ border-right:1px solid var(--rule); background: var(--paper-3); }
+  .write-shell.mobile .write-col.left{ display:none; }
+  .write-shell.mobile .write-col.right{ border-top:none; }
+  .mobile-tabs{ display:none; }
+  .write-shell.mobile ~ .mobile-tabs, .frame[data-mode="mobile"] .mobile-tabs{ display:flex; }
+  .mtabs{ display:flex; border-bottom:1px solid var(--rule); }
+  .mtab{ flex:1; text-align:center; padding:10px; font-family:'IBM Plex Sans'; font-size:12.5px; color:var(--ink-faint); }
+  .mtab.active{ color: var(--ink); font-weight:600; border-bottom:2px solid var(--ink); margin-bottom:-1px; }
+  .write-article-title{ font-family:'Newsreader', serif; font-size:15px; margin: 4px 0 8px 0; }
+  .write-article-body{ font-family:'Newsreader', serif; font-size:13px; line-height:1.7; color: var(--ink-soft); }
+  .editor-topline{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .editor-box{
+    border:1px solid var(--rule);
+    border-radius:6px;
+    background: var(--paper-3);
+    min-height: 300px;
+    padding: 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    line-height:1.8;
+    color: var(--ink);
+  }
+  .editor-box .cursor{ display:inline-block; width:6px; height:13px; background: var(--redpen); vertical-align:middle; margin-left:1px; opacity:0.8;}
+  .view-toggle{ display:flex; gap:6px; }
+  .toggle-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border:1px solid var(--rule);
+    background:none;
+    color: var(--ink-faint);
+    cursor:pointer;
+  }
+  .toggle-btn.on{ background: var(--ink); color: var(--paper-3); border-color: var(--ink); }
+
+  .device-toggle{
+    display:flex; gap:6px; margin-bottom:16px;
+  }
+
+  ::selection{ background: rgba(179,70,50,0.25); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- ============ Drawer / nav ============ -->
+  <nav class="drawer">
+    <div class="wordmark">Inkling</div>
+    <span class="wordmark-sub">a hunch, inked in</span>
+
+    <div class="drawer-label">Screens</div>
+    <ul class="tab-list">
+      <li><button class="tab active" data-screen="s1"><span class="num">01</span> Library</button></li>
+      <li><button class="tab" data-screen="s2"><span class="num">02</span> Reading</button></li>
+      <li><button class="tab" data-screen="s3"><span class="num">03</span> Vocabulary</button></li>
+      <li><button class="tab" data-screen="s4"><span class="num">04</span> Word detail</button></li>
+      <li><button class="tab" data-screen="s5"><span class="num">05</span> Writing</button></li>
+    </ul>
+
+    <p class="drawer-note">"inkling, n. — a faint notion; a hint not yet fully understood."</p>
+  </nav>
+
+  <!-- ============ Stage ============ -->
+  <main class="stage">
+
+    <!-- Screen 1 -->
+    <section class="screen active" id="s1">
+      <div class="stage-header">
+        <div class="eyebrow">01 / Library</div>
+        <h1 class="stage-title">記事の追加と一覧</h1>
+        <p class="stage-desc">URL または本文の貼り付けで記事を追加。カテゴリごとにタグ付けして保存する。</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">marginalia.app/</span></div>
+        <div class="home-body">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <span class="serif" style="font-size:17px;font-weight:600;">Inkling</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-faint);">your inklings →</span>
+          </div>
+          <div class="add-slot">＋ 記事・ドキュメントを追加（URL / 貼り付け）</div>
+
+          <div class="lib-row">
+            <div>
+              <span class="pill">News</span>
+              <div class="lib-title">Why remote work is reshaping city centres</div>
+              <div class="lib-meta">bbc.com · 2026.07.18</div>
+            </div>
+          </div>
+          <div class="lib-row">
+            <div>
+              <span class="pill neutral">Docs</span>
+              <div class="lib-title">Using the Fetch API — MDN Web Docs</div>
+              <div class="lib-meta">developer.mozilla.org · 2026.07.17</div>
+            </div>
+          </div>
+          <div class="lib-row">
+            <div>
+              <span class="pill">News</span>
+              <div class="lib-title">The quiet return of vinyl in the streaming era</div>
+              <div class="lib-meta">bbc.com · 2026.07.15</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 2 -->
+    <section class="screen" id="s2">
+      <div class="stage-header">
+        <div class="eyebrow">02 / Reading</div>
+        <h1 class="stage-title">記事閲覧 ＋ 単語選択</h1>
+        <p class="stage-desc">PC はドラッグ、モバイルは長押しで範囲選択 → ポップアップから単語帳へ保存。</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">marginalia.app/article/142</span></div>
+        <div class="reader-body">
+          <div class="reader-topline">
+            <a class="back-link" href="#">← 戻る</a>
+            <span class="pill red">この記事について書く →</span>
+          </div>
+          <span class="pill" style="margin-bottom:8px;display:inline-block;">News</span>
+          <h2 class="serif" style="font-size:19px;margin:6px 0 14px 0;">Why remote work is reshaping city centres</h2>
+          <p class="article-text">
+            Five years after the shift to hybrid work became <span class="hl">entrenched</span>, city planners are grappling with a <span class="hl2">paradigm shift</span> in how downtown districts function. Footfall on weekdays remains
+            <span class="select-pop"><span class="plus">＋</span>ink this</span>
+            below pre-pandemic levels, forcing landlords to rethink...
+          </p>
+          <div class="drag-hint">— text selected via drag / long-press —</div>
+          <div class="float-badge"><span>inklings</span><span class="count">3</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3 -->
+    <section class="screen" id="s3">
+      <div class="stage-header">
+        <div class="eyebrow">03 / Vocabulary</div>
+        <h1 class="stage-title">Your inklings（索引カード）</h1>
+        <p class="stage-desc">まだ確信はないけれど、気になった単語・表現。育てていく途中のカード。タップで詳細ページへ。</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">marginalia.app/vocab</span></div>
+        <div class="vocab-body">
+          <div class="search-row"><span class="mono" style="font-size:11px;color:var(--ink-faint);">⌕</span><input placeholder="検索…" /></div>
+          <div class="card-stack">
+            <div class="idx-card">
+              <div class="idx-top"><span class="idx-word">entrenched</span><span class="idx-date">07.18</span></div>
+              <div class="idx-def">(adj.) firmly established, difficult to change</div>
+              <div class="idx-src">— Why remote work is reshaping city centres</div>
+              <div class="stamp">×2</div>
+            </div>
+            <div class="idx-card">
+              <div class="idx-top"><span class="idx-word">paradigm shift</span><span class="idx-date">07.18</span></div>
+              <div class="idx-def">(n.) a fundamental change in approach</div>
+              <div class="idx-src">— Why remote work is reshaping city centres</div>
+              <div class="stamp">×1</div>
+            </div>
+            <div class="idx-card">
+              <div class="idx-top"><span class="idx-word">idempotent</span><span class="idx-date">07.17</span></div>
+              <div class="idx-def">(adj.) same result no matter how many times applied</div>
+              <div class="idx-src">— Using the Fetch API — MDN</div>
+              <div class="stamp">×3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 4 -->
+    <section class="screen" id="s4">
+      <div class="stage-header">
+        <div class="eyebrow">04 / Word detail</div>
+        <h1 class="stage-title">単語詳細 ＋ ノート</h1>
+        <p class="stage-desc">意味と、自分なりのメモ・使い方・関連表現を自由記述で書き足していく。</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">marginalia.app/vocab/entrenched</span></div>
+        <div class="detail-body">
+          <a class="back-link" href="#">← 単語帳</a>
+          <div class="detail-word">entrenched</div>
+          <a class="detail-src" href="#">出典: Why remote work is reshaping city centres</a>
+          <blockquote class="ctx">"...five years after the shift to hybrid work became entrenched, city planners are grappling with..."</blockquote>
+          <div class="field-label">意味・定義</div>
+          <div class="field-box">(adj.) firmly established and difficult or unlikely to change. 「定着した、根付いた」</div>
+          <div class="field-label">メモ・使い方・関連表現</div>
+          <div class="field-box">"deeply entrenched habits" のように deeply とよく共起する。政治や社会構造の話でよく見る語。似た語: ingrained, embedded</div>
+          <span class="btn btn-primary">ink it</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 5 -->
+    <section class="screen" id="s5">
+      <div class="stage-header">
+        <div class="eyebrow">05 / Writing</div>
+        <h1 class="stage-title">執筆画面</h1>
+        <p class="stage-desc">PC は記事＋エディタの2段組、モバイルはタブで切り替え。下のボタンで表示を確認できます。</p>
+      </div>
+
+      <div class="device-toggle">
+        <button class="toggle-btn on" id="dt-desktop" onclick="setDevice('desktop')">Desktop</button>
+        <button class="toggle-btn" id="dt-mobile" onclick="setDevice('mobile')">Mobile</button>
+      </div>
+
+      <div class="frame wide" id="write-frame">
+        <div class="frame-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">marginalia.app/article/142/write</span></div>
+
+        <!-- mobile tabs (shown only in mobile mode) -->
+        <div class="mtabs" id="mtabs" style="display:none;">
+          <div class="mtab" id="mtab-article">記事</div>
+          <div class="mtab active" id="mtab-write">執筆</div>
+        </div>
+
+        <div class="write-shell" id="write-shell">
+          <div class="write-col left" id="write-left">
+            <span class="pill neutral">原文</span>
+            <div class="write-article-title">Why remote work is reshaping city centres</div>
+            <div class="write-article-body">Five years after the shift to hybrid work became entrenched, city planners are grappling with a paradigm shift in how downtown districts function. Footfall on weekdays remains below pre-pandemic levels, forcing landlords to rethink long-term leasing strategies...</div>
+          </div>
+          <div class="write-col right">
+            <div class="editor-topline">
+              <span class="mono" style="font-size:10.5px;color:var(--ink-faint);">128 words · <span style="color:var(--pine-deep);">保存済み ✓</span></span>
+              <div class="view-toggle">
+                <button class="toggle-btn">編集</button>
+                <button class="toggle-btn on">プレビュー</button>
+              </div>
+            </div>
+            <div class="editor-box">
+              ## この記事について<br><br>
+              この記事を読んで一番印象的だったのは、都市計画がこれほど早く <em>paradigm shift</em> に対応しなければならないという点だった。特に *entrenched* という単語は、単なる「定着した」以上に、変えることの難しさを含意しているように感じた<span class="cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.screen).classList.add('active');
+    });
+  });
+
+  function setDevice(mode){
+    const shell = document.getElementById('write-shell');
+    const mtabs = document.getElementById('mtabs');
+    const dtDesktop = document.getElementById('dt-desktop');
+    const dtMobile = document.getElementById('dt-mobile');
+    const frame = document.getElementById('write-frame');
+
+    if(mode === 'mobile'){
+      shell.classList.add('mobile');
+      mtabs.style.display = 'flex';
+      frame.classList.remove('wide');
+      frame.style.maxWidth = '360px';
+      dtMobile.classList.add('on');
+      dtDesktop.classList.remove('on');
+    } else {
+      shell.classList.remove('mobile');
+      mtabs.style.display = 'none';
+      frame.classList.add('wide');
+      frame.style.maxWidth = '';
+      dtDesktop.classList.add('on');
+      dtMobile.classList.remove('on');
+    }
+  }
+
+  document.getElementById('mtab-article').addEventListener('click', () => {
+    document.getElementById('mtab-article').classList.add('active');
+    document.getElementById('mtab-write').classList.remove('active');
+    document.getElementById('write-left').style.display = 'block';
+    document.querySelector('.write-col.right').style.display = 'none';
+  });
+  document.getElementById('mtab-write').addEventListener('click', () => {
+    document.getElementById('mtab-write').classList.add('active');
+    document.getElementById('mtab-article').classList.remove('active');
+    document.getElementById('write-left').style.display = 'none';
+    document.querySelector('.write-col.right').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
