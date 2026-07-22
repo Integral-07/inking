@@ -7,6 +7,7 @@ import { VocabDetail } from './pages/VocabDetail'
 import { Write } from './pages/Write'
 import { WritingList } from './pages/WritingList'
 import { Help } from './pages/Help'
+import { Settings } from './pages/Settings'
 import { Login } from './pages/Login'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/vocab/:id" element={<VocabDetail />} />
             <Route path="/writings" element={<WritingList />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </main>

@@ -53,9 +53,9 @@ export function Sidebar() {
             <div className="account-menu-wrapper" ref={menuRef}>
               {menuOpen && (
                 <div className="account-menu">
-                  <button className="account-menu-item" disabled>
+                  <NavLink to="/settings" className="account-menu-item" onClick={() => setMenuOpen(false)}>
                     設定
-                  </button>
+                  </NavLink>
                   <button
                     className="account-menu-item"
                     onClick={() => {

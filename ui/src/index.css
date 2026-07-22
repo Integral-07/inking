@@ -203,6 +203,7 @@ a {
 .account-menu-item {
   display: block;
   width: 100%;
+  box-sizing: border-box;
   text-align: left;
   padding: 8px 12px;
   font-family: 'IBM Plex Sans', sans-serif;
@@ -211,6 +212,7 @@ a {
   border: none;
   color: var(--ink-soft);
   cursor: pointer;
+  text-decoration: none;
 }
 .account-menu-item + .account-menu-item {
   border-top: 1px solid var(--rule-soft);
