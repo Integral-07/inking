@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useSession, signOut } from '../hooks/auth'
 
 const SCREENS = [
+  { num: '00', label: 'How to use', to: '/help' },
   { num: '01', label: 'Library', to: '/' },
   { num: '02', label: 'Vocabulary', to: '/vocab' },
   { num: '03', label: 'Writings', to: '/writings' },
@@ -30,11 +31,7 @@ export function Sidebar() {
         ))}
       </ul>
 
-      <p className="drawer-note">"inkling, n. — a faint notion; a hint not yet fully understood."</p>
-
-      <NavLink to="/help" className="account-action" style={{ marginTop: '12px' }}>
-        使い方
-      </NavLink>
+      <p className="drawer-note"></p>
 
       {!loading && (
         <div className="account-box">

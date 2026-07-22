@@ -2,7 +2,7 @@ export function Help() {
   return (
     <section>
       <div className="stage-header">
-        <div className="eyebrow">Help</div>
+        <div className="eyebrow">00 / How to use</div>
         <h1 className="stage-title">使い方</h1>
       </div>
 
