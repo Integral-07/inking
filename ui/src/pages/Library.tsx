@@ -25,7 +25,6 @@ export function Library() {
       <div className="stage-header">
         <div className="eyebrow">01 / Library</div>
         <h1 className="stage-title">記事の追加と一覧</h1>
-        <p className="stage-desc">URLを貼り付けて記事を追加。カテゴリは自動推定される。</p>
       </div>
 
       <div className="frame">
@@ -33,7 +32,6 @@ export function Library() {
           <div className="dot" />
           <div className="dot" />
           <div className="dot" />
-          <span className="url">marginalia.app/</span>
         </div>
         <div className="home-body">
           <form className="add-form" onSubmit={handleSubmit}>

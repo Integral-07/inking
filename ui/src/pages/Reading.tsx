@@ -20,7 +20,6 @@ export function Reading() {
           <div className="dot" />
           <div className="dot" />
           <div className="dot" />
-          <span className="url">marginalia.app/article/{id}</span>
         </div>
         <div className="reader-body">
           <div className="reader-topline">

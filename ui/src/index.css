@@ -208,11 +208,12 @@ a {
   border: 1px solid var(--rule);
   border-radius: 10px;
   box-shadow: var(--shadow);
-  max-width: 640px;
+  width: 100%;
+  max-width: 760px;
   overflow: hidden;
 }
 .frame.wide {
-  max-width: 880px;
+  max-width: 960px;
 }
 .frame-bar {
   display: flex;
