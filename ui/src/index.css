@@ -562,3 +562,41 @@ textarea.editor-box:focus {
 ::selection {
   background: rgba(179, 70, 50, 0.25);
 }
+
+/* ---------- selection -> definition popover ---------- */
+.selection-popover {
+  position: fixed;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--paper-3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: var(--shadow);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.selection-popover-term {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.selection-popover-def {
+  color: rgba(245, 243, 236, 0.85);
+}
+.selection-popover-pos {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(245, 243, 236, 0.55);
+  margin-right: 6px;
+}
+.selection-popover-source {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: rgba(245, 243, 236, 0.55);
+  margin-top: 6px;
+}
