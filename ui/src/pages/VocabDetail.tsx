@@ -35,7 +35,6 @@ export function VocabDetail() {
           <div className="dot" />
           <div className="dot" />
           <div className="dot" />
-          <span className="url">marginalia.app/vocab/{id}</span>
         </div>
         <div className="detail-body">
           <Link className="back-link" to="/vocab">

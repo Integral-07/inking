@@ -21,7 +21,6 @@ export function Vocab() {
       <div className="stage-header">
         <div className="eyebrow">02 / Vocabulary</div>
         <h1 className="stage-title">Your inklings</h1>
-        <p className="stage-desc">まだ確信はないけれど、気になった単語・表現。タップで詳細ページへ。</p>
       </div>
 
       <div className="frame">
@@ -29,7 +28,6 @@ export function Vocab() {
           <div className="dot" />
           <div className="dot" />
           <div className="dot" />
-          <span className="url">marginalia.app/vocab</span>
         </div>
         <div className="vocab-body">
           <div className="search-row">

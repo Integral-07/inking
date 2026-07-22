@@ -39,7 +39,6 @@ export function Write() {
       <div className="stage-header">
         <div className="eyebrow">Library / Writing</div>
         <h1 className="stage-title">執筆</h1>
-        <p className="stage-desc">記事について感じたことを書く。自動保存される。</p>
       </div>
 
       <div className="frame wide">
@@ -47,7 +46,6 @@ export function Write() {
           <div className="dot" />
           <div className="dot" />
           <div className="dot" />
-          <span className="url">marginalia.app/article/{id}/write</span>
         </div>
 
         <div className="write-mobile-tabs">
