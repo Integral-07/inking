@@ -3,6 +3,8 @@ import { cors } from 'hono/cors'
 import { authMiddleware } from './middleware/auth'
 import { extractArticle } from './lib/readabilityExtractor'
 import { inferCategory } from './lib/categoryInference'
+import { lookupWebSearch } from './lib/webSearch'
+import { lookupWiktionary } from './lib/wiktionary'
 import { ArticleRepository } from './repositories/article'
 import { WritingRepository } from './repositories/writing'
 import { addArticle, listArticles, getArticle } from './usecases/article'
@@ -23,6 +25,30 @@ app.post('/api/extract', async (c) => {
     return c.json({ ...extracted, category: inferCategory(extracted.sourceDomain) })
   } catch (err) {
     return c.json({ error: err instanceof Error ? err.message : 'extraction failed' }, 422)
+  }
+})
+
+// No auth required: pure term -> definition/excerpt, no DB access.
+// Tries Wiktionary first (covers function words and idiomatic phrases the
+// primary dictionary API misses), then falls back to a Wikipedia excerpt.
+app.get('/api/lookup', async (c) => {
+  const term = c.req.query('term')
+  if (!term) return c.json({ error: 'term is required' }, 400)
+
+  try {
+    const wiktionary = await lookupWiktionary(term)
+    if (wiktionary) {
+      return c.json({
+        text: `(${wiktionary.partOfSpeech.toLowerCase()}) ${wiktionary.definition}`,
+        source: 'Wiktionary',
+        sourceUrl: `https://en.wiktionary.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`,
+      })
+    }
+
+    const result = await lookupWebSearch(term)
+    return c.json(result)
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : 'lookup failed' }, 502)
   }
 })
 
