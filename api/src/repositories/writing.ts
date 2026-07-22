@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Writing } from '@inking/shared-types'
+import type { Writing, WritingListItem } from '@inking/shared-types'
 
 interface WritingRow {
   id: string
@@ -7,6 +7,10 @@ interface WritingRow {
   article_id: string
   content_markdown: string
   updated_at: string
+}
+
+interface WritingWithArticleRow extends WritingRow {
+  articles: { title: string } | null
 }
 
 function toWriting(row: WritingRow): Writing {
@@ -19,8 +23,28 @@ function toWriting(row: WritingRow): Writing {
   }
 }
 
+function toWritingListItem(row: WritingWithArticleRow): WritingListItem {
+  return {
+    id: row.id,
+    articleId: row.article_id,
+    articleTitle: row.articles?.title ?? '(削除された記事)',
+    contentMarkdown: row.content_markdown,
+    updatedAt: row.updated_at,
+  }
+}
+
 export class WritingRepository {
   constructor(private readonly supabase: SupabaseClient) {}
+
+  async list(): Promise<WritingListItem[]> {
+    const { data, error } = await this.supabase
+      .from('writings')
+      .select('*, articles(title)')
+      .order('updated_at', { ascending: false })
+
+    if (error) throw error
+    return (data ?? []).map((row) => toWritingListItem(row as unknown as WritingWithArticleRow))
+  }
 
   async getByArticleId(articleId: string): Promise<Writing | null> {
     const { data, error } = await this.supabase

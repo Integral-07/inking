@@ -9,7 +9,7 @@ import { ArticleRepository } from './repositories/article'
 import { WritingRepository } from './repositories/writing'
 import { VocabRepository } from './repositories/vocab'
 import { addArticle, listArticles, getArticle } from './usecases/article'
-import { getWriting, saveWriting } from './usecases/writing'
+import { listWritings, getWriting, saveWriting } from './usecases/writing'
 import { addVocabEntry, listVocabEntries, getVocabEntry, updateVocabEntry } from './usecases/vocab'
 import type { AppEnv } from './env'
 
@@ -119,6 +119,11 @@ app.patch('/api/vocab/:id', authMiddleware, async (c) => {
   } catch (err) {
     return c.json({ error: err instanceof Error ? err.message : 'failed to update vocab entry' }, 422)
   }
+})
+
+app.get('/api/writings', authMiddleware, async (c) => {
+  const repo = new WritingRepository(c.get('supabase'))
+  return c.json(await listWritings(repo))
 })
 
 app.get('/api/writings/:articleId', authMiddleware, async (c) => {
