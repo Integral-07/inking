@@ -452,6 +452,113 @@ hr.rule {
   text-align: left;
 }
 
+/* ---------- Writing ---------- */
+.write-shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 460px;
+}
+.write-col {
+  padding: 20px;
+  min-width: 0;
+}
+.write-col.left {
+  border-right: 1px solid var(--rule);
+  background: var(--paper-3);
+}
+.write-article-title {
+  font-family: 'Newsreader', serif;
+  font-size: 15px;
+  margin: 4px 0 8px 0;
+}
+.editor-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+.editor-box {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--paper-3);
+  padding: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--ink);
+  resize: vertical;
+}
+textarea.editor-box:focus {
+  outline: none;
+  border-color: var(--pine);
+}
+.view-toggle {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.toggle-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+.toggle-btn.on {
+  background: var(--ink);
+  color: var(--paper-3);
+  border-color: var(--ink);
+}
+
+.write-mobile-tabs {
+  display: none;
+}
+.write-mobile-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.write-mobile-tab.active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: -1px;
+}
+
+@media (max-width: 860px) {
+  .write-shell {
+    grid-template-columns: 1fr;
+  }
+  .write-col.left,
+  .write-col.right {
+    display: none;
+  }
+  .write-col.mobile-active {
+    display: block;
+  }
+  .write-col.left {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .write-mobile-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
 ::selection {
   background: rgba(179, 70, 50, 0.25);
 }

@@ -25,6 +25,11 @@ export function Reading() {
             <Link className="back-link" to="/">
               ← 戻る
             </Link>
+            {id && (
+              <Link className="pill red" to={`/article/${id}/write`}>
+                この記事について書く →
+              </Link>
+            )}
           </div>
 
           {loading && <p className="empty-state">読み込み中…</p>}
