@@ -7,8 +7,10 @@ import { lookupWebSearch } from './lib/webSearch'
 import { lookupWiktionary } from './lib/wiktionary'
 import { ArticleRepository } from './repositories/article'
 import { WritingRepository } from './repositories/writing'
+import { VocabRepository } from './repositories/vocab'
 import { addArticle, listArticles, getArticle } from './usecases/article'
 import { getWriting, saveWriting } from './usecases/writing'
+import { addVocabEntry, listVocabEntries, getVocabEntry, updateVocabEntry } from './usecases/vocab'
 import type { AppEnv } from './env'
 
 const app = new Hono<AppEnv>()
@@ -74,6 +76,49 @@ app.get('/api/articles/:id', authMiddleware, async (c) => {
   const article = await getArticle(repo, c.req.param('id'))
   if (!article) return c.json({ error: 'not found' }, 404)
   return c.json(article)
+})
+
+app.get('/api/vocab', authMiddleware, async (c) => {
+  const repo = new VocabRepository(c.get('supabase'))
+  return c.json(await listVocabEntries(repo))
+})
+
+app.post('/api/vocab', authMiddleware, async (c) => {
+  const repo = new VocabRepository(c.get('supabase'))
+  const body = await c.req.json<{ term?: string; articleId?: string | null; definition?: string; contextQuote?: string }>()
+
+  if (!body.term?.trim()) return c.json({ error: 'term is required' }, 400)
+
+  try {
+    const entry = await addVocabEntry(repo, {
+      term: body.term.trim(),
+      articleId: body.articleId ?? null,
+      definition: body.definition,
+      contextQuote: body.contextQuote,
+    })
+    return c.json(entry, 201)
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : 'failed to add vocab entry' }, 422)
+  }
+})
+
+app.get('/api/vocab/:id', authMiddleware, async (c) => {
+  const repo = new VocabRepository(c.get('supabase'))
+  const entry = await getVocabEntry(repo, c.req.param('id'))
+  if (!entry) return c.json({ error: 'not found' }, 404)
+  return c.json(entry)
+})
+
+app.patch('/api/vocab/:id', authMiddleware, async (c) => {
+  const repo = new VocabRepository(c.get('supabase'))
+  const body = await c.req.json<{ definition?: string; notes?: string }>()
+
+  try {
+    const entry = await updateVocabEntry(repo, c.req.param('id'), body)
+    return c.json(entry)
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : 'failed to update vocab entry' }, 422)
+  }
 })
 
 app.get('/api/writings/:articleId', authMiddleware, async (c) => {

@@ -5,11 +5,28 @@ import { SelectionPopover } from './SelectionPopover'
 interface ActiveSelection {
   text: string
   rect: DOMRect
+  contextQuote?: string
+}
+
+function extractContextSentence(range: Range, selectedText: string): string | undefined {
+  const startNode = range.startContainer
+  const container = startNode.nodeType === Node.TEXT_NODE ? startNode.parentElement : (startNode as Element)
+  const block = container?.closest('p, li, blockquote, h1, h2, h3, h4, h5, h6')
+  const fullText = block?.textContent?.trim()
+  if (!fullText) return undefined
+
+  const sentences = fullText.split(/(?<=[.!?])\s+/)
+  return sentences.find((s) => s.includes(selectedText)) ?? fullText.slice(0, 200)
+}
+
+interface ArticleContentProps {
+  article: Article
+  onSaved?: () => void
 }
 
 // article.content is sanitized server-side in api/src/lib/readabilityExtractor.ts
 // before it's ever stored, so it's safe to render as-is here.
-export function ArticleContent({ article }: { article: Article }) {
+export function ArticleContent({ article, onSaved }: ArticleContentProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [selection, setSelection] = useState<ActiveSelection | null>(null)
 
@@ -38,7 +55,11 @@ export function ArticleContent({ article }: { article: Article }) {
       return
     }
 
-    setSelection({ text, rect: range.getBoundingClientRect() })
+    setSelection({
+      text,
+      rect: range.getBoundingClientRect(),
+      contextQuote: extractContextSentence(range, text),
+    })
   }
 
   return (
@@ -51,7 +72,14 @@ export function ArticleContent({ article }: { article: Article }) {
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
       {selection && (
-        <SelectionPopover text={selection.text} rect={selection.rect} onDismiss={() => setSelection(null)} />
+        <SelectionPopover
+          text={selection.text}
+          rect={selection.rect}
+          articleId={article.id}
+          contextQuote={selection.contextQuote}
+          onDismiss={() => setSelection(null)}
+          onSaved={onSaved}
+        />
       )}
     </>
   )
