@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSession } from '../hooks/auth'
 
 export function Welcome() {
+  const { user } = useSession()
   const [showUnauthorizedNotice, setShowUnauthorizedNotice] = useState(false)
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export function Welcome() {
           </div>
 
           <div style={{ marginTop: '32px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <Link className="btn btn-primary" to="/login">
+            <Link className="btn btn-primary" to={user ? '/' : '/login'}>
               はじめる
             </Link>
             <Link className="btn btn-ghost" to="/help">
