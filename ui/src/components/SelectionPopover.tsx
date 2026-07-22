@@ -87,6 +87,13 @@ export function SelectionPopover({ text, rect, articleId, contextQuote, onDismis
     }
   }
 
+  async function handleWebSearch() {
+
+    const query = encodeURIComponent(text)
+    const url = `https://www.google.com/search?q=${query}`
+    window.open(url, '_blank')
+  }
+
   const left = Math.max(8, Math.min(rect.left, window.innerWidth - POPOVER_MAX_WIDTH - 8))
 
   // position:fixed doesn't move with scroll, so a popover anchored below a
@@ -116,9 +123,29 @@ export function SelectionPopover({ text, rect, articleId, contextQuote, onDismis
       ) : (
         <div className="selection-popover-def">定義が見つかりませんでした</div>
       )}
-      <button className="selection-popover-save" onClick={handleSave} disabled={submitting || saved}>
-        {saved ? '✓ 単語帳に追加しました' : submitting ? '追加中…' : '＋ 単語帳へ'}
-      </button>
+      <div style={{ display: 'flex' , gap: '12px'}}>
+        <button className="selection-popover-save" onClick={handleSave} disabled={submitting || saved}>
+          {saved ? '✓ 単語帳に追加しました' : submitting ? '追加中…' : '＋ 単語帳へ'}
+        </button>
+        <button className="selection-popover-save" onClick={handleWebSearch} disabled={submitting || saved}>
+          <svg
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ verticalAlign: '-1px', marginRight: '4px' }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          Web検索
+        </button>
+      </div>
     </div>
   )
 }
