@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSession, signOut } from '../hooks/auth'
 
@@ -10,6 +11,19 @@ const SCREENS = [
 
 export function Sidebar() {
   const { user, loading } = useSession()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [menuOpen])
 
   return (
     <nav className="drawer">
@@ -36,12 +50,27 @@ export function Sidebar() {
       {!loading && (
         <div className="account-box">
           {user ? (
-            <>
-              <span className="account-email mono">{user.email}</span>
-              <button className="account-action" onClick={() => signOut()}>
-                ログアウト
+            <div className="account-menu-wrapper" ref={menuRef}>
+              {menuOpen && (
+                <div className="account-menu">
+                  <button className="account-menu-item" disabled>
+                    設定
+                  </button>
+                  <button
+                    className="account-menu-item"
+                    onClick={() => {
+                      setMenuOpen(false)
+                      signOut()
+                    }}
+                  >
+                    ログアウト
+                  </button>
+                </div>
+              )}
+              <button className="account-plate" onClick={() => setMenuOpen((open) => !open)}>
+                <span className="account-plate-email">{user.email}</span>
               </button>
-            </>
+            </div>
           ) : (
             <NavLink to="/login" className="account-action">
               ログイン
