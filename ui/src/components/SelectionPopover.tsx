@@ -87,6 +87,13 @@ export function SelectionPopover({ text, rect, articleId, contextQuote, onDismis
     }
   }
 
+  async function handleWebSearch() {
+
+    const query = encodeURIComponent(text)
+    const url = `https://www.google.com/search?q=${query}`
+    window.open(url, '_blank')
+  }
+
   const left = Math.max(8, Math.min(rect.left, window.innerWidth - POPOVER_MAX_WIDTH - 8))
 
   // position:fixed doesn't move with scroll, so a popover anchored below a
@@ -120,7 +127,7 @@ export function SelectionPopover({ text, rect, articleId, contextQuote, onDismis
         <button className="selection-popover-save" onClick={handleSave} disabled={submitting || saved}>
           {saved ? '✓ 単語帳に追加しました' : submitting ? '追加中…' : '＋ 単語帳へ'}
         </button>
-        <button className="selection-popover-save" onClick={handleSave} disabled={submitting || saved}>
+        <button className="selection-popover-save" onClick={handleWebSearch} disabled={submitting || saved}>
           <svg
             width="11"
             height="11"
