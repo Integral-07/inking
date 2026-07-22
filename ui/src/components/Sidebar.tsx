@@ -4,6 +4,7 @@ import { useSession, signOut } from '../hooks/auth'
 const SCREENS = [
   { num: '01', label: 'Library', to: '/' },
   { num: '02', label: 'Vocabulary', to: '/vocab' },
+  { num: '03', label: 'Writings', to: '/writings' },
 ]
 
 export function Sidebar() {
