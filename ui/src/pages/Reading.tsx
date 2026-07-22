@@ -9,12 +9,11 @@ export function Reading() {
   return (
     <section>
       <div className="stage-header">
-        <div className="eyebrow">02 / Reading</div>
+        <div className="eyebrow">Library / Reading</div>
         <h1 className="stage-title">記事閲覧</h1>
-        <p className="stage-desc">記事本文を読む。単語選択→単語帳への保存は次のステップで追加予定。</p>
       </div>
 
-      <div className="frame wide">
+      <div className="frame">
         <div className="frame-bar">
           <div className="dot" />
           <div className="dot" />
