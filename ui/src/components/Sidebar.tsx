@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useSession, signOut } from '../hooks/auth'
 
 const SCREENS = [
@@ -27,7 +27,9 @@ export function Sidebar() {
 
   return (
     <nav className="drawer">
-      <div className="wordmark">Inkling</div>
+      <Link to="/welcome" className="wordmark" style={{ textDecoration: 'none' }}>
+        Inkling
+      </Link>
       <span className="wordmark-sub">a hunch, inked in</span>
 
       <div className="drawer-label">Index</div>
