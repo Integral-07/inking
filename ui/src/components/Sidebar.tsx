@@ -12,6 +12,7 @@ const SCREENS = [
 export function Sidebar() {
   const { user, loading } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -26,60 +27,87 @@ export function Sidebar() {
   }, [menuOpen])
 
   return (
-    <nav className="drawer">
-      <Link to="/welcome" className="wordmark" style={{ textDecoration: 'none' }}>
-        Inkling
-      </Link>
-      <span className="wordmark-sub">a hunch, inked in</span>
+    <>
+      <div className="mobile-topbar">
+        <button className="hamburger-btn" onClick={() => setDrawerOpen(true)} aria-label="メニューを開く">
+          <span />
+          <span />
+          <span />
+        </button>
+        <Link to="/welcome" className="wordmark" style={{ textDecoration: 'none' }}>
+          Inkling
+        </Link>
+      </div>
 
-      <div className="drawer-label">Index</div>
-      <ul className="tab-list">
-        {SCREENS.map((screen) => (
-          <li key={screen.to}>
-            <NavLink
-              to={screen.to}
-              end={screen.to === '/'}
-              className={({ isActive }) => `tab${isActive ? ' active' : ''}`}
-            >
-              <span className="num">{screen.num}</span> {screen.label}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      <div
+        className={`drawer-backdrop${drawerOpen ? ' open' : ''}`}
+        onClick={() => setDrawerOpen(false)}
+      />
 
-      <p className="drawer-note"></p>
+      <nav className={`drawer${drawerOpen ? ' open' : ''}`}>
+        <Link to="/welcome" className="wordmark" style={{ textDecoration: 'none' }}>
+          Inkling
+        </Link>
+        <span className="wordmark-sub">a hunch, inked in</span>
 
-      {!loading && (
-        <div className="account-box">
-          {user ? (
-            <div className="account-menu-wrapper" ref={menuRef}>
-              {menuOpen && (
-                <div className="account-menu">
-                  <NavLink to="/settings" className="account-menu-item" onClick={() => setMenuOpen(false)}>
-                    設定
-                  </NavLink>
-                  <button
-                    className="account-menu-item"
-                    onClick={() => {
-                      setMenuOpen(false)
-                      signOut()
-                    }}
-                  >
-                    ログアウト
-                  </button>
-                </div>
-              )}
-              <button className="account-plate" onClick={() => setMenuOpen((open) => !open)}>
-                <span className="account-plate-email">{user.email}</span>
-              </button>
-            </div>
-          ) : (
-            <NavLink to="/login" className="account-action">
-              ログイン
-            </NavLink>
-          )}
-        </div>
-      )}
-    </nav>
+        <div className="drawer-label">Index</div>
+        <ul className="tab-list">
+          {SCREENS.map((screen) => (
+            <li key={screen.to}>
+              <NavLink
+                to={screen.to}
+                end={screen.to === '/'}
+                className={({ isActive }) => `tab${isActive ? ' active' : ''}`}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <span className="num">{screen.num}</span> {screen.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+        <p className="drawer-note"></p>
+
+        {!loading && (
+          <div className="account-box">
+            {user ? (
+              <div className="account-menu-wrapper" ref={menuRef}>
+                {menuOpen && (
+                  <div className="account-menu">
+                    <NavLink
+                      to="/settings"
+                      className="account-menu-item"
+                      onClick={() => {
+                        setMenuOpen(false)
+                        setDrawerOpen(false)
+                      }}
+                    >
+                      設定
+                    </NavLink>
+                    <button
+                      className="account-menu-item"
+                      onClick={() => {
+                        setMenuOpen(false)
+                        setDrawerOpen(false)
+                        signOut()
+                      }}
+                    >
+                      ログアウト
+                    </button>
+                  </div>
+                )}
+                <button className="account-plate" onClick={() => setMenuOpen((open) => !open)}>
+                  <span className="account-plate-email">{user.email}</span>
+                </button>
+              </div>
+            ) : (
+              <NavLink to="/login" className="account-action" onClick={() => setDrawerOpen(false)}>
+                ログイン
+              </NavLink>
+            )}
+          </div>
+        )}
+      </nav>
+    </>
   )
 }

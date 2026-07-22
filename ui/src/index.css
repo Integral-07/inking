@@ -241,6 +241,13 @@ a {
   color: var(--redpen);
 }
 
+.mobile-topbar {
+  display: none;
+}
+.drawer-backdrop {
+  display: none;
+}
+
 /* ---------- stage ---------- */
 .stage {
   padding: 40px 48px;
@@ -557,7 +564,10 @@ hr.rule {
 .article-text table {
   border-collapse: collapse;
   font-size: 13.5px;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
+  display: block;
+  overflow-x: auto;
 }
 .article-text th,
 .article-text td {
@@ -676,6 +686,81 @@ textarea.editor-box:focus {
   .write-mobile-tabs {
     display: flex;
     border-bottom: 1px solid var(--rule);
+  }
+
+  .shell {
+    display: block;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 52px;
+    padding: 0 16px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mobile-topbar .wordmark {
+    margin-bottom: 0;
+  }
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+  }
+  .drawer-backdrop.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(34, 38, 46, 0.35);
+    z-index: 90;
+  }
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    max-width: 82vw;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    z-index: 100;
+  }
+  .drawer.open {
+    transform: translateX(0);
+  }
+  .stage {
+    height: calc(100vh - 52px);
+    padding: 20px 16px;
+  }
+  .frame,
+  .frame.wide {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stage-title {
+    font-size: 22px;
+  }
+  .stage {
+    padding: 16px 12px;
   }
 }
 
