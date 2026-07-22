@@ -16,7 +16,7 @@ export function Sidebar() {
       <div className="wordmark">Inkling</div>
       <span className="wordmark-sub">a hunch, inked in</span>
 
-      <div className="drawer-label">Screens</div>
+      <div className="drawer-label">Index</div>
       <ul className="tab-list">
         {SCREENS.map((screen) => (
           <li key={screen.to}>
