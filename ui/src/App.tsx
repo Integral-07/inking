@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './hooks/auth'
 import { Sidebar } from './components/Sidebar'
+import { RequireAuth } from './components/RequireAuth'
 import { Library } from './pages/Library'
 import { Reading } from './pages/Reading'
 import { Vocab } from './pages/Vocab'
@@ -14,23 +16,74 @@ import { Login } from './pages/Login'
 function App() {
   return (
     <BrowserRouter>
-      <div className="shell">
-        <Sidebar />
-        <main className="stage">
-          <Routes>
-            <Route path="/" element={<Library />} />
-            <Route path="/article/:id" element={<Reading />} />
-            <Route path="/article/:id/write" element={<Write />} />
-            <Route path="/vocab" element={<Vocab />} />
-            <Route path="/vocab/:id" element={<VocabDetail />} />
-            <Route path="/writings" element={<WritingList />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </main>
-      </div>
+      <AuthProvider>
+        <div className="shell">
+          <Sidebar />
+          <main className="stage">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Library />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/article/:id"
+                element={
+                  <RequireAuth>
+                    <Reading />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/article/:id/write"
+                element={
+                  <RequireAuth>
+                    <Write />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/vocab"
+                element={
+                  <RequireAuth>
+                    <Vocab />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/vocab/:id"
+                element={
+                  <RequireAuth>
+                    <VocabDetail />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/writings"
+                element={
+                  <RequireAuth>
+                    <WritingList />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <RequireAuth>
+                    <Settings />
+                  </RequireAuth>
+                }
+              />
+              <Route path="/help" element={<Help />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </main>
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

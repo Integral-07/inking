@@ -27,6 +27,15 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}))
+
+    // Purely cosmetic: Welcome.tsx checks this to show a one-time notice.
+    // Real authorization is enforced server-side (JWT + RLS) regardless of
+    // this flag, so there's nothing to gain by tampering with it.
+    if (response.status === 401) {
+      sessionStorage.setItem('unauthorized', '1')
+      window.location.href = '/welcome'
+    }
+
     throw new ApiError(response.status, body.error ?? `Request failed with status ${response.status}`)
   }
 

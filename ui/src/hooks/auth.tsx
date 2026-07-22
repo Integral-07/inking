@@ -1,8 +1,18 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabaseClient'
 
-export function useSession() {
+interface AuthContextValue {
+  user: User | null
+  loading: boolean
+}
+
+const AuthContext = createContext<AuthContextValue>({ user: null, loading: true })
+
+// Fetches/subscribes to the Supabase session exactly once for the whole app.
+// Sidebar and RequireAuth both need this, so it's provided via context
+// instead of each consumer independently subscribing to onAuthStateChange.
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,7 +29,11 @@ export function useSession() {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  return { user, loading }
+  return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>
+}
+
+export function useSession() {
+  return useContext(AuthContext)
 }
 
 export function signOut() {

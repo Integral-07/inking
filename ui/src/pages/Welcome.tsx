@@ -1,12 +1,26 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export function Welcome() {
+  const [showUnauthorizedNotice, setShowUnauthorizedNotice] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('unauthorized')) {
+      sessionStorage.removeItem('unauthorized')
+      setShowUnauthorizedNotice(true)
+    }
+  }, [])
+
   return (
     <section>
       <div className="stage-header">
         <div className="eyebrow">Welcome</div>
         <h1 className="stage-title">Inkling</h1>
       </div>
+
+      {showUnauthorizedNotice && (
+        <div className="toast">ログインの有効期限が切れました。もう一度ログインしてください。</div>
+      )}
 
       <div className="frame">
         <div className="frame-bar">
