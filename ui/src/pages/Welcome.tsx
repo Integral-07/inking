@@ -43,7 +43,7 @@ export function Welcome() {
           </div>
 
           <div style={{ marginTop: '32px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <Link className="btn btn-primary" to="/">
+            <Link className="btn btn-primary" to="/login">
               はじめる
             </Link>
             <Link className="btn btn-ghost" to="/help">
