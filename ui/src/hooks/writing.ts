@@ -1,6 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Writing } from '@inking/shared-types'
+import type { Writing, WritingListItem } from '@inking/shared-types'
 import { apiFetch } from '../lib/apiClient'
+
+export function useWritingList() {
+  const [writings, setWritings] = useState<WritingListItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const refresh = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      setWritings(await apiFetch<WritingListItem[]>('/api/writings'))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'failed to load writings')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    refresh()
+  }, [refresh])
+
+  return { writings, loading, error, refresh }
+}
 
 export function useWriting(articleId: string | undefined) {
   const [writing, setWriting] = useState<Writing | null>(null)

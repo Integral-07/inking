@@ -485,6 +485,8 @@ hr.rule {
 .write-col {
   padding: 20px;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 .write-col.left {
   border-right: 1px solid var(--rule);
@@ -505,6 +507,7 @@ hr.rule {
 .editor-box {
   box-sizing: border-box;
   width: 100%;
+  flex: 1;
   min-height: 300px;
   border: 1px solid var(--rule);
   border-radius: 6px;
@@ -571,7 +574,7 @@ textarea.editor-box:focus {
     display: none;
   }
   .write-col.mobile-active {
-    display: block;
+    display: flex;
   }
   .write-col.left {
     border-right: none;
