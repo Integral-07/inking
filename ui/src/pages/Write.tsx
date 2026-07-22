@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useArticle } from '../hooks/article'
 import { useAutosaveWriting, useWriting } from '../hooks/writing'
+import { useScrollRestoration } from '../hooks/scrollRestoration'
 import { ArticleContent } from '../components/ArticleContent'
 import { MarkdownPreview } from '../components/MarkdownPreview'
 
@@ -10,6 +11,7 @@ export function Write() {
   const { article } = useArticle(id)
   const { writing, loading } = useWriting(id)
   const { scheduleSave, status } = useAutosaveWriting(id)
+  const scrollRef = useScrollRestoration(id && `write-left:${id}`, !!article)
 
   const [markdown, setMarkdown] = useState('')
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit')
@@ -64,7 +66,7 @@ export function Write() {
         </div>
 
         <div className="write-shell">
-          <div className={`write-col left${mobileTab === 'article' ? ' mobile-active' : ''}`}>
+          <div className={`write-col left${mobileTab === 'article' ? ' mobile-active' : ''}`} ref={scrollRef}>
             <span className="pill neutral">原文</span>
             {article && (
               <>

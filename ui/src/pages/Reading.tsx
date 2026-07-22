@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useArticle } from '../hooks/article'
+import { useScrollRestoration } from '../hooks/scrollRestoration'
 import { ArticleContent } from '../components/ArticleContent'
 
 export function Reading() {
   const { id } = useParams<{ id: string }>()
   const { article, loading, error } = useArticle(id)
   const [savedCount, setSavedCount] = useState(0)
+  const scrollRef = useScrollRestoration(id && `reading:${id}`, !loading && !!article)
 
   return (
     <section>
@@ -21,7 +23,7 @@ export function Reading() {
           <div className="dot" />
           <div className="dot" />
         </div>
-        <div className="reader-body">
+        <div className="reader-body" ref={scrollRef}>
           <div className="reader-topline">
             <Link className="back-link" to="/">
               ← 戻る
