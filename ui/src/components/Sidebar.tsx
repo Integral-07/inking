@@ -32,6 +32,10 @@ export function Sidebar() {
 
       <p className="drawer-note">"inkling, n. — a faint notion; a hint not yet fully understood."</p>
 
+      <NavLink to="/help" className="account-action" style={{ marginTop: '12px' }}>
+        使い方
+      </NavLink>
+
       {!loading && (
         <div className="account-box">
           {user ? (
