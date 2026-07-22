@@ -54,7 +54,8 @@ a {
 .shell {
   display: grid;
   grid-template-columns: 240px 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 .drawer {
   background: var(--paper-2);
@@ -177,9 +178,20 @@ a {
 .stage {
   padding: 40px 48px;
   overflow-x: auto;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.stage > section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 .stage-header {
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 .eyebrow {
   font-family: 'IBM Plex Mono', monospace;
@@ -211,9 +223,13 @@ a {
   width: 100%;
   max-width: 760px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 .frame.wide {
-  max-width: 960px;
+  max-width: min(1300px, 94vw);
 }
 .frame-bar {
   display: flex;
@@ -222,6 +238,7 @@ a {
   padding: 10px 14px;
   border-bottom: 1px solid var(--rule);
   background: var(--paper-2);
+  flex-shrink: 0;
 }
 .frame-bar .dot {
   width: 7px;
@@ -293,6 +310,9 @@ hr.rule {
 /* ---------- Library ---------- */
 .home-body {
   padding: 22px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 .add-form {
   border: 1.5px dashed var(--rule);
@@ -342,6 +362,9 @@ hr.rule {
 /* ---------- Reading ---------- */
 .reader-body {
   padding: 22px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 .reader-topline {
   display: flex;
@@ -480,13 +503,15 @@ hr.rule {
 .write-shell {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 460px;
+  flex: 1;
+  min-height: 0;
 }
 .write-col {
   padding: 20px;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .write-col.left {
   border-right: 1px solid var(--rule);
@@ -546,6 +571,7 @@ textarea.editor-box:focus {
 
 .write-mobile-tabs {
   display: none;
+  flex-shrink: 0;
 }
 .write-mobile-tab {
   flex: 1;
@@ -651,6 +677,9 @@ textarea.editor-box:focus {
 /* ---------- Vocabulary (index cards) ---------- */
 .vocab-body {
   padding: 22px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 .search-row {
   display: flex;
@@ -728,6 +757,9 @@ textarea.editor-box:focus {
 /* ---------- Word detail ---------- */
 .detail-body {
   padding: 24px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 .detail-word {
   font-family: 'Newsreader', serif;
