@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useArticle } from '../hooks/article'
 import { ArticleContent } from '../components/ArticleContent'
@@ -5,6 +6,7 @@ import { ArticleContent } from '../components/ArticleContent'
 export function Reading() {
   const { id } = useParams<{ id: string }>()
   const { article, loading, error } = useArticle(id)
+  const [savedCount, setSavedCount] = useState(0)
 
   return (
     <section>
@@ -43,8 +45,15 @@ export function Reading() {
               <h2 className="serif" style={{ fontSize: 19, margin: '6px 0 14px 0' }}>
                 {article.title}
               </h2>
-              <ArticleContent article={article} />
+              <ArticleContent article={article} onSaved={() => setSavedCount((c) => c + 1)} />
             </>
+          )}
+
+          {savedCount > 0 && (
+            <div className="float-badge">
+              <span>inklings</span>
+              <span className="count">{savedCount}</span>
+            </div>
           )}
         </div>
       </div>
