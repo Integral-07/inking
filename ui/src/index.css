@@ -937,6 +937,35 @@ blockquote.ctx {
   color: var(--ink-faint);
   margin-bottom: 6px;
 }
+.settings-section + .settings-section {
+  border-top: 1px solid var(--rule);
+  margin-top: 20px;
+  padding-top: 20px;
+}
+.settings-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.settings-form.stacked {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.settings-form input {
+  flex: 1;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.5px;
+  background: var(--paper-3);
+  color: var(--ink);
+}
+.settings-form.stacked input {
+  width: 100%;
+  max-width: 320px;
+}
+
 .field-box {
   box-sizing: border-box;
   width: 100%;
