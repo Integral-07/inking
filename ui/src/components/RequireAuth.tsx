@@ -10,7 +10,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useSession()
 
   if (loading) return null
-  if (!user) return <Navigate to="/welcome" replace />
+  if (!user) return <Navigate to="/login" replace />
 
   return <>{children}</>
 }
